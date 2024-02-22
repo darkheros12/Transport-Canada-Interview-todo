@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
 using todo.models;
 using todo.web.Services;
 
@@ -38,14 +39,24 @@ namespace todo.web.Controllers
         [HttpGet("/{culture:regex(fr)}/listes/{listId}/elements/{itemId}/supprimer")]
         public async Task<IActionResult> DeleteItem(int listId, int itemId)
         {
-            throw new NotImplementedException();
+            var result = await _client.DeleteItem(itemId, listId);
+            if (!result.IsSuccessStatusCode)
+                throw new ResultException($"Unable to delete item \"{itemId}\" for {UserName}", result);
+
+            SetSuccessMessage();
+            return RedirectToAction(nameof(GetList), new { id = listId });
         }
 
         [HttpGet("/{culture:regex(en)}/lists/{id}/delete")]
         [HttpGet("/{culture:regex(fr)}/listes/{id}/supprimer")]
         public async Task<IActionResult> DeleteList(int id)
         {
-            throw new NotImplementedException();
+            var result = await _client.DeleteList(id);
+            if (!result.IsSuccessStatusCode)
+                throw new ResultException($"Unable to delete list \"{id}\" for {UserName}", result);
+
+            SetSuccessMessage();
+            return RedirectToAction(nameof(GetLists));
         }
 
         [HttpGet("/{culture:regex(en)}/lists")]

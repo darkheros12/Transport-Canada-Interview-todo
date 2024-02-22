@@ -48,5 +48,8 @@
         {
             <a asp-action="ToggleItem" asp-route-itemId="@item.Id" class="list-group-item">@item.Label</a>
         }
+
+        <a asp-action="DeleteItem" asp-route-listId="@Model.Id" asp-route-itemId="@item.Id">@Labels.Delete</a>
+
     }
 </div>
