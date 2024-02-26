@@ -37,19 +37,27 @@
     </div>
 </details>
 
-<div class="list-group">
-    @foreach (var item in Model.Items)
-    {
-        @if(item.IsComplete)
+<div class="list-group list-group-horizontal">
+    <table style="width: 100%">
+        <tbody>
+            @foreach (var item in Model.Items)
         {
-            <a asp-action="ToggleItem" asp-route-itemId="@item.Id" class="list-group-item"><del>@item.Label</del></a>
+            <tr>
+                <td>
+                    @if (item.IsComplete)
+                    {
+                        <a asp-action="ToggleItem" asp-route-itemId="@item.Id" class="list-group-item"><del>@item.Label</del></a>
+                    }
+                    else
+                    {
+                        <a asp-action="ToggleItem" asp-route-itemId="@item.Id" class="list-group-item">@item.Label</a>
+                    }
+                </td>
+                <td style="width: 15%; text-align: center">
+                    <a asp-action="DeleteItem" asp-route-listId="@Model.Id" asp-route-itemId="@item.Id" class="list-group-item">@Labels.Delete</a>
+                </td>
+            </tr>
         }
-        else
-        {
-            <a asp-action="ToggleItem" asp-route-itemId="@item.Id" class="list-group-item">@item.Label</a>
-        }
-
-        <a asp-action="DeleteItem" asp-route-listId="@Model.Id" asp-route-itemId="@item.Id">@Labels.Delete</a>
-
-    }
+        </tbody>
+    </table>
 </div>
